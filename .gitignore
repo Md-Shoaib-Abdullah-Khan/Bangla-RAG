@@ -2,3 +2,4 @@ myenv
 *.ipynb_checkpoints
 embeddings
 .env
+__pycache__

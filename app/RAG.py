@@ -37,8 +37,8 @@ def build_vectorstore():
         print(f"An error occurred: {e}")
     
     text_splitter = RecursiveCharacterTextSplitter(
-        chunk_size=500,  
-        chunk_overlap=200,  
+        chunk_size=200,  
+        chunk_overlap=50,  
         add_start_index=True, 
     )
     hf = HuggingFaceEmbeddings(
@@ -63,7 +63,7 @@ def load_rag_chain():
     
     retriever = vectorstore.as_retriever(search_kwargs={"k": 10})
     
-    print(retriever.invoke("বিয়ের সময় কল্যাণীর প্রকৃত বয়স কত ছিল?"))
+    #print(retriever.invoke("বিয়ের সময় মেয়ের বয়স কত ছিল?"))
     
     llm = ChatGroq(model="deepseek-r1-distill-llama-70b", api_key=groq_api_key)
     
@@ -75,11 +75,11 @@ def load_rag_chain():
 
 if not os.path.exists("embeddings/chroma_store"): build_vectorstore()
 
-build_vectorstore()
+#build_vectorstore()
 
-question = "বিয়ের সময় মেয়ের প্রকৃত বয়স কত ছিল?"
+#question = "বিয়ের সময় মেয়ের প্রকৃত বয়স কত ছিল?"
 
-rag_chain = load_rag_chain()
+#rag_chain = load_rag_chain()
 
-response = rag_chain.invoke({'input' : question})
-print(response['answer'])
+#response = rag_chain.invoke({'input' : question})
+#print(response['answer'])
