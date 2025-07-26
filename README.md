@@ -1,9 +1,9 @@
-# 📖 Bangla RAG Chatbot
+# 📖 Bangla RAG
 
 **This project implements a Retrieval-Augmented Generation (RAG) based chatbot that can understand and answer both Bangla and English queries. It retrieves context from a PDF knowledge base and uses a Language Model to generate grounded and relevant answers.**  
 
 ![Streamlit App](demo.png) 
-▶ **Watch Demo Video**: [Google Drive Link](link)
+▶ **Watch Project Explanation Video**: [Youtube Video Link](https://www.youtube.com/watch?v=9ZHEgCL3BcA)
 ---
 
 ## 📂 **Project Structure**  
@@ -32,8 +32,8 @@
 
 ### **1. Install Dependencies**  
 ```bash
-git clone https://github.com/yourusername/bangla-rag-chatbot.git
-cd bangla-rag-chatbot
+git clone https://github.com/Md-Shoaib-Abdullah-Khan/Bangla-RAG
+cd Bangla-RAG
 python -m venv myenv
 source myenv/bin/activate        # On Windows: myenv\\Scripts\\activate
 pip install -r requirements.txt
@@ -129,19 +129,28 @@ Average Similarity Score: 0.83
 ## 📘 Evaluation Questions & Answers
 
 ### 📌 What method or library did you use to extract the text, and why? Did you face any formatting challenges with the PDF content?
-I used **pdfplumber** and **Tesseract OCR** because the PDF were image-based and contained Bangla script. Yes, I faced challenges such as broken Bangla characters and misaligned MCQs, which were resolved using regex and Unicode normalization.
+I used **pdfplumber** and **Tesseract OCR** because the PDF were image-based and contained Bangla script. Yes, I faced challenges such as broken Bangla characters and misaligned MCQs, which were resolved using manual cleaning.
 
 ### 📌 What chunking strategy did you choose? Why do you think it works well for semantic retrieval?
-We used `RecursiveCharacterTextSplitter` with `chunk_size=200` and `chunk_overlap=50`. It preserves sentence boundaries and maintains context between chunks, which is essential for semantic retrieval.
+We used `RecursiveCharacterTextSplitter` with `chunk_size=200` and `chunk_overlap=50`. This strategy splits the processed text at natural boundaries like lines and paragraphs. It works well because:
+   - It avoids cutting semantic units mid-way
+   - Overlap ensures context continuity
+   - It's language-agnostic and flexible for Bangla and English
+This helps the retriever return relevant results even when a concept spans multiple lines.
 
 ### 📌 What embedding model did you use? Why did you choose it? How does it capture the meaning of the text?
-We used **`l3cube-pune/bengali-sentence-similarity-sbert`**, a Bangla-trained Sentence-BERT model. It provides dense semantic embeddings suited for Bangla, making it ideal for question-answer matching.
+We used **`l3cube-pune/bengali-sentence-similarity-sbert`**, a Bangla-trained Sentence-BERT model from HuggingFace. It was chosen because:
+   - It's fine-tuned on Bangla text and questions
+   - Optimized for semantic similarity tasks
+   - Captures contextual relationships better than token-level models
+
+It generates dense vector representations that preserve sentence-level meaning, which is crucial for question-answer matching.
 
 ### 📌 How are you comparing the query with your stored chunks? Why did you choose this similarity method and storage setup?
 We use **cosine similarity** through **ChromaDB** to match the query embedding against chunk embeddings. Chroma offers fast search and persistence, and cosine similarity is effective for comparing semantic vectors.
 
 ### 📌 How do you ensure that the question and the document chunks are compared meaningfully? What would happen if the query is vague or missing context?
-We:
+We ensure meaningful comparison by:
 - Use sentence-level embeddings
 - Maintain overlap across chunks
 - Feed full retrieved context to the LLM
