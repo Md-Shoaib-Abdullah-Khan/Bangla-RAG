@@ -2,7 +2,7 @@
 
 **This project implements a Retrieval-Augmented Generation (RAG) based chatbot that can understand and answer both Bangla and English queries. It retrieves context from a PDF knowledge base and uses a Language Model to generate grounded and relevant answers.**  
 
-![App](demo.png) 
+![Streamlit App](demo.png) 
 
 ---
 
@@ -80,24 +80,25 @@ streamlit run app/main.py
 ---
 
 ## 📡 **API Documentation**  
-### **POST `/query`**  
+### **POST `/ask`**  
 **Input**:  
 ```json
-{"query": "কাকে অনুপমের ভাগ্য দেবতা বলে উল্লেখ করা হয়েছে?"}
+{"query": "বিয়ের সময় কল্যাণীর বয়স কত ছিল?"}
 ```  
 **Output**:  
 ```json
 {
-  "answer": "মামাকে",
+  "question": "বিয়ের সময় কল্যাণীর বয়স কত ছিল?",
+  "answer": "পনের বছর",
 }
 ```
 
 ---
 
 ## 🔍 **Sample Query & Output**  
-| **Query**               | **Generated Answer**                          |
-|-------------------------|---------------------------------------------|
-| "কাকে অনুপমের ভাগ্য দেবতা বলে উল্লেখ করা হয়েছে?" | "মামাকে" |  
+|                  **Query**                      |            **Generated Answer**               |
+|-------------------------------------------------|-----------------------------------------------|
+| "কাকে অনুপমের ভাগ্য দেবতা বলে উল্লেখ করা হয়েছে?" |                  "মামাকে"                     |  
 
 ---
 
@@ -106,10 +107,22 @@ Run evaluation:
 ```bash
 python app/evaluation.py
 ```  
-**Metrics**:  
-- **Cosine Similarity**: 0.87 (avg)  
-- **BLEU Score**: 0.65  
-- **Precision@K**: 0.92  
+-----------------------------------------
+Evaluation Results (RAG vs Expected Answers)
+-----------------------------------------
+1. Query: "অনুপমের ভাষায় সুপুরুষ কাকে বলা হয়েছে?"  
+   - Reference Answer: "শস্তুনাথ সেনকে."  
+   - Generated Answer: "অনুপমের ভাষায় সুপুরুষ শব্দটি শম্ভুনাথ সেনকে বোঝাতে ব্যবহৃত হয়েছে, যার মধ্যে পুরুষালি গুণাবলি ছিল।"  
+   - Similarity score: 0.79  
+
+2. Query: "Who is the writer of this story?"  
+   - Expected Answer: "The writer of this story is Rabindranath Tagore."  
+   - Generated Answer: "The writer of the story "Aparichita" is Rabindranath Tagore."  
+   - Similarity score: 0.87 
+
+-----------------------------------------
+Aggregate Similarity Score: 0.83  
+-----------------------------------------
 
 *(Example output in `evaluation/results.txt`)*  
 
