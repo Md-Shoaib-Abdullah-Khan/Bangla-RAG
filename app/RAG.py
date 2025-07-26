@@ -80,7 +80,6 @@ def build_vectorstore():
     text_splitter = RecursiveCharacterTextSplitter(chunk_size=200, chunk_overlap=50)
     splits = text_splitter.split_text(text)
     vectorstore = Chroma.from_texts(splits, embedding=embedding, persist_directory="embeddings/chroma_store")
-    vectorstore.persist()
 
 if not os.path.exists("embeddings/chroma_store"): 
     build_vectorstore()
