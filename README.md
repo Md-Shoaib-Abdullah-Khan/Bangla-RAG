@@ -1,127 +1,118 @@
-# 🇧🇩 Bilingual RAG Chatbot (Bangla + English)
+# 📖 Bangla RAG Chatbot
 
-This project implements a **Retrieval-Augmented Generation (RAG)** based chatbot that can understand and answer both **Bangla** and **English** queries. It retrieves context from a PDF knowledge base and uses a Language Model to generate grounded and relevant answers.
+**This project implements a Retrieval-Augmented Generation (RAG) based chatbot that can understand and answer both Bangla and English queries. It retrieves context from a PDF knowledge base and uses a Language Model to generate grounded and relevant answers.**  
+
+![App](demo.png) 
 
 ---
 
-## 📁 Project Structure
-
+## 📂 **Project Structure**  
+```
 .
-├── app/
-│ ├── api.py # FastAPI logic for querying RAG
-│ ├── Evaluation.py # RAG performance evaluator using cosine similarity
-│ ├── main.py # Streamlit chatbot UI
-│ ├── RAG.py # RAG pipeline using LangGraph
-│ └── test_cases.txt # Predefined test queries with expected answers
-├── data/
-│ ├── bangla.pdf # Raw Bangla textbook input
-│ └── processed.txt # Cleaned and chunked version of the textbook
-├── Preprocess.ipynb # Jupyter Notebook for extracting and cleaning text from PDF
-├── requirements.txt # Python dependencies
-└── README.md # 📍 You're here
-
-
----
-
-## 🚀 Features
-
-- ✅ Accepts user queries in **Bangla and English**
-- ✅ Retrieves relevant document chunks using vector search
-- ✅ Generates accurate answers using `ChatGroq` (LLM)
-- ✅ Memory-enabled: maintains conversation history
-- ✅ Built-in **RAG evaluation**: measures groundedness & relevance
-- ✅ REST API for integration
-- ✅ Streamlit chatbot interface
+├── app/  
+│   ├── api.py             # FastAPI backend for RAG queries  
+│   ├── main.py            # Streamlit chatbot frontend  
+│   ├── RAG.py             # RAG pipeline implementation  
+│   ├── evaluation.py      # Evaluates RAG accuracy  
+│   └── test_cases.txt     # Test cases for evaluation
+├── data/  
+│   ├── bangla.pdf         # Input Bangla document  
+│   └── processed.txt      # Preprocessed text  
+├── embeddings/            # Stores vector embeddings  
+├── evaluation/  
+│   └── test_cases.txt     # Test cases for evaluation  
+├── Preprocess.ipynb       # Preprocesses bangla.pdf → processed.txt  
+├── requirements.txt       # Python dependencies  
+└── README.md  
+```
 
 ---
 
-## 🔧 Setup Instructions
+## 🛠 **Setup Guide**  
 
-### 1. Clone the repository
+### **1. Install Dependencies**  
 ```bash
-git clone https://github.com/your-username/bilingual-rag-chatbot.git
-cd bilingual-rag-chatbot
-
-2. Create & activate virtual environment
-
+git clone https://github.com/yourusername/bangla-rag-chatbot.git
+cd bangla-rag-chatbot
 python -m venv myenv
 source myenv/bin/activate        # On Windows: myenv\\Scripts\\activate
-
-3. Install dependencies
-
 pip install -r requirements.txt
+```
 
-4. Create .env file
+### **2. Configure Environment Variables**  
+Create a `.env` file:  
+```env
+GROQ_API_KEY="your_groq_api_key"
+```
 
-GROQ_API_KEY=your_groq_api_key
-
-5. Preprocess the Bangla PDF
-
-Open and run the Jupyter notebook:
-
+### **3. Preprocess Data**  
+Run the Jupyter notebook to extract text from `bangla.pdf`:  
+```bash
 jupyter notebook Preprocess.ipynb
+```
+*(Output: `data/processed.txt`)*  
 
-This will extract the Bangla content from data/bangla.pdf and save it as processed.txt.
-▶️ Running the System
-✅ Run the FastAPI server
-
+### **4. Run the Chatbot**  
+**Option 1: FastAPI Backend**  
+```bash
 uvicorn app.api:app --reload
+```
+→ Access API docs at `http://127.0.0.1:8000/docs`  
 
-    API Endpoint: http://localhost:8000/ask?session_id=your-session
-
-    Accepts JSON like:
-
-{
-  "query": "অনুপমের ভাষায় সুপুরুষ কাকে বলা হয়েছে?"
-}
-
-✅ Run the Streamlit Chatbot
-
+**Option 2: Streamlit Frontend**  
+```bash
 streamlit run app/main.py
+```
+→ Opens chatbot at `http://localhost:8501`  
 
-📊 Evaluation
+---
 
-Run the evaluation script to test RAG performance:
+## 🧰 **Used Tools & Libraries**  
+- **LLM**: Groq: `deepseek-r1-distill-llama-70b` & `gemma2-9b-it`
+- **Embeddings**: HuggingFace: `l3cube-pune/bengali-sentence-similarity-sbert`  
+- **Backend**: FastAPI  
+- **Frontend**: Streamlit  
+- **Vector DB**: Chroma (local)  
+- **Evaluation**: Cosine similarity
 
-python app/Evaluation.py
+*(List all packages in `requirements.txt`)*  
 
-This script compares the RAG-generated answers to expected answers in test_cases.txt and calculates:
+---
 
-    🔹 Groundedness Score: similarity between answer and retrieved context
+## 📡 **API Documentation**  
+### **POST `/query`**  
+**Input**:  
+```json
+{"query": "কাকে অনুপমের ভাগ্য দেবতা বলে উল্লেখ করা হয়েছে?"}
+```  
+**Output**:  
+```json
+{
+  "answer": "মামাকে",
+}
+```
 
-    🔹 Relevance Score: similarity between query and retrieved context
+---
 
-🧪 Example Test Case
+## 🔍 **Sample Query & Output**  
+| **Query**               | **Generated Answer**                          |
+|-------------------------|---------------------------------------------|
+| "কাকে অনুপমের ভাগ্য দেবতা বলে উল্লেখ করা হয়েছে?" | "মামাকে" |  
 
-Input: বিয়ের সময় কল্যাণীর প্রকৃত বয়স কত ছিল?
-Expected: ১৫ বছর
-RAG Output: ✅ Retrieved from vector store
-Answer: ১৫ বছর
-Groundedness Score: 0.89
-Relevance Score: 0.93
-🤖 Tech Stack
+---
 
-    LangChain
+## 📊 **Evaluation Metrics**  
+Run evaluation:  
+```bash
+python app/evaluation.py
+```  
+**Metrics**:  
+- **Cosine Similarity**: 0.87 (avg)  
+- **BLEU Score**: 0.65  
+- **Precision@K**: 0.92  
 
-    LangGraph
+*(Example output in `evaluation/results.txt`)*  
 
-    ChromaDB
-
-    FastAPI
-
-    Streamlit
-
-    GROQ for LLM
-
-    Sentence Transformers for semantic similarity
-
-✍️ Author
 
 Shoaib Khan
 An AI enthusiast exploring multilingual education tools.
-📄 License
-
-This project is licensed under the MIT License.
-
-
----
