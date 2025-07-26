@@ -55,7 +55,7 @@ jupyter notebook Preprocess.ipynb
 ### **4. Run the Chatbot**  
 **Option 1: FastAPI Backend**  
 ```bash
-uvicorn app.api:app --reload
+python app/api.py
 ```
 → Access API docs at `http://127.0.0.1:8000/docs`  
 
