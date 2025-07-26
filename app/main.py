@@ -9,7 +9,7 @@ if "messages" not in st.session_state:
     st.session_state.messages = []
     st.session_state.session_id = "test-session" 
 
-st.title("Bangla/English RAG Chatbot")
+st.title("Bangla Textbook RAG Chatbot")
 st.caption("Ask questions in either English or Bangla")
 
 for message in st.session_state.messages:
