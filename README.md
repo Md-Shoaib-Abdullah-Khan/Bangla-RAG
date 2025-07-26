@@ -124,9 +124,37 @@ Evaluation Results (RAG vs Expected Answers)
 Average Similarity Score: 0.83  
 -----------------------------------------
 
-
 ---
 
+## 📘 Evaluation Questions & Answers
+
+### 📌 What method or library did you use to extract the text, and why? Did you face any formatting challenges with the PDF content?
+I used **pdfplumber** and **Tesseract OCR** because the PDF were image-based and contained Bangla script. Yes, I faced challenges such as broken Bangla characters and misaligned MCQs, which were resolved using regex and Unicode normalization.
+
+### 📌 What chunking strategy did you choose? Why do you think it works well for semantic retrieval?
+We used `RecursiveCharacterTextSplitter` with `chunk_size=200` and `chunk_overlap=50`. It preserves sentence boundaries and maintains context between chunks, which is essential for semantic retrieval.
+
+### 📌 What embedding model did you use? Why did you choose it? How does it capture the meaning of the text?
+We used **`l3cube-pune/bengali-sentence-similarity-sbert`**, a Bangla-trained Sentence-BERT model. It provides dense semantic embeddings suited for Bangla, making it ideal for question-answer matching.
+
+### 📌 How are you comparing the query with your stored chunks? Why did you choose this similarity method and storage setup?
+We use **cosine similarity** through **ChromaDB** to match the query embedding against chunk embeddings. Chroma offers fast search and persistence, and cosine similarity is effective for comparing semantic vectors.
+
+### 📌 How do you ensure that the question and the document chunks are compared meaningfully? What would happen if the query is vague or missing context?
+We:
+- Use sentence-level embeddings
+- Maintain overlap across chunks
+- Feed full retrieved context to the LLM
+
+If the query is vague, the model might give a generic or incorrect response. This can be improved with query rewriting or clarification.
+
+### 📌 Do the results seem relevant? If not, what might improve them (e.g. better chunking, better embedding model, larger document)?
+Yes, the results are mostly relevant. In edge cases, relevance could be improved by:
+- Expanding the corpus
+- Using adaptive chunking
+- Switching to more powerful or multilingual embedding models
+
+---
 ## 📜 License
 MIT © [Shoaib Khan] - AI Enthusiast Building Multilingual Education Tools
 
