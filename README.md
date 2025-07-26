@@ -3,7 +3,7 @@
 **This project implements a Retrieval-Augmented Generation (RAG) based chatbot that can understand and answer both Bangla and English queries. It retrieves context from a PDF knowledge base and uses a Language Model to generate grounded and relevant answers.**  
 
 ![Streamlit App](demo.png) 
-
+▶ **Watch Demo Video**: [Google Drive Link](link)
 ---
 
 ## 📂 **Project Structure**  
@@ -121,11 +121,13 @@ Evaluation Results (RAG vs Expected Answers)
    - Similarity score: 0.87 
 
 -----------------------------------------
-Aggregate Similarity Score: 0.83  
+Average Similarity Score: 0.83  
 -----------------------------------------
 
-*(Example output in `evaluation/results.txt`)*  
 
+---
 
-Shoaib Khan
-An AI enthusiast exploring multilingual education tools.
+## 📜 License
+MIT © [Shoaib Khan] - AI Enthusiast Building Multilingual Education Tools
+
+---
