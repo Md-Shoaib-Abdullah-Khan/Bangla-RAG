@@ -103,7 +103,7 @@ def retrieve(state: State) -> Dict:
         docs = vector_store.similarity_search(translated_question, k=10)
     else:
         docs = vector_store.similarity_search(question, k=10)
-    print(docs)
+    #print(docs)
     return {
         "context": docs,
         "original_language": lang
