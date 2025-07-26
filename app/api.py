@@ -13,7 +13,15 @@ rag_graph = load_rag_chain()
 
 @app.post("/ask")
 async def ask(input: QueryInput, session_id: str = Query(default="default")):
-    result = rag_graph.invoke({"question": input.query}, config={"configurable": {"session_id": session_id}})
+    result = rag_graph.invoke(
+            {"question": input.query},
+            config={
+                "configurable": {
+                    "thread_id": session_id,  # Use session_id as thread_id
+                    "session_id": session_id  # Keep for your own tracking
+                }
+            }
+        )
     return {
         "question": input.query,
         "answer": result["answer"]
