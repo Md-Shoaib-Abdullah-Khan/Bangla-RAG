@@ -19,8 +19,6 @@
 │   ├── bangla.pdf         # Input Bangla document  
 │   └── processed.txt      # Preprocessed text  
 ├── embeddings/            # Stores vector embeddings  
-├── evaluation/  
-│   └── test_cases.txt     # Test cases for evaluation  
 ├── Preprocess.ipynb       # Preprocesses bangla.pdf → processed.txt  
 ├── requirements.txt       # Python dependencies  
 └── README.md  
